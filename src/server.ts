@@ -4,6 +4,9 @@ dotenv.config({ path: __dirname + "/../.env" });
 import app from "./app";
 import connectDB from "./app/config/db";
 
+console.log("Server is starting...");
+
+
 const port = process.env.PORT || 5000;
 
 const run = async () => {

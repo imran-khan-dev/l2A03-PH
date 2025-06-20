@@ -4,7 +4,9 @@ import { bookRoutes } from "../modules/book/book.route";
 
 export const routes = express.Router();
 
+
 // Book routes
+routes.use("/books", bookRoutes);
 routes.use("/books", bookRoutes);
 
 // Borrow routes

@@ -7,12 +7,13 @@ export const createBook = async (
   next: NextFunction
 ) => {
   try {
-    const result = await Book.create(req.body);
+    const book = await Book.create(req.body);
+    const { __v, ...bookData } = book.toObject();
 
     res.status(201).json({
       success: true,
       message: "Book created successfully",
-      data: result,
+      data: bookData,
     });
   } catch (error) {
     next(error);
