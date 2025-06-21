@@ -1,7 +1,7 @@
 import express from "express";
 import serverless from "serverless-http";
-import { bookRoutes } from "../src/app/modules/book/book.route";
-import { borrowRoutes } from "../src/app/modules/borrow/borrow.route";
+import { bookRoutes } from "../app/modules/book/book.route";
+import { borrowRoutes } from "../app/modules/borrow/borrow.route";
 import { json } from "body-parser";
 
 const app = express();
