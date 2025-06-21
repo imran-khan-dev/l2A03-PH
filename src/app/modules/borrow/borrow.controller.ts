@@ -12,23 +12,25 @@ export const borrowBook = async (
   req: Request<{}, {}, BorrowBookRequestBody>,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { book, quantity, dueDate } = req.body;
 
     const foundBook = await Book.findById(book);
     if (!foundBook) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: "Book not found",
       });
+      return;
     }
 
     if (foundBook.copies < quantity) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: "Not enough copies available",
       });
+      return;
     }
 
     foundBook.copies -= quantity;
@@ -52,7 +54,7 @@ export const getBorrowSummary = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const result = await Borrow.aggregate([
       {

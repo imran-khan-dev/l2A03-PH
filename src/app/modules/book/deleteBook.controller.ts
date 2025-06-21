@@ -6,27 +6,29 @@ export const deleteBook = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { bookId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(bookId)) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: "Invalid Book ID",
         error: {
           message: "The provided Book ID is not valid",
         },
       });
+      return;
     }
 
     const deletedBook = await Book.findByIdAndDelete(bookId);
 
     if (!deletedBook) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: "Book not found",
       });
+      return;
     }
 
     res.status(200).json({
