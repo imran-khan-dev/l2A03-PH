@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.bookRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const createBook_controller_1 = require("./createBook.controller");
+const getAllBooks_controller_1 = require("./getAllBooks.controller");
+const getBookById_controller_1 = require("./getBookById.controller");
+const updateBook_controller_1 = require("./updateBook.controller");
+const deleteBook_controller_1 = require("./deleteBook.controller");
+const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
+const book_validation_1 = require("./book.validation");
+exports.bookRoutes = express_1.default.Router();
+exports.bookRoutes.post("/", (0, validateRequest_1.default)(book_validation_1.createBookZodSchema), createBook_controller_1.createBook);
+exports.bookRoutes.get("/", getAllBooks_controller_1.getAllBooks);
+exports.bookRoutes.get("/:bookId", getBookById_controller_1.getBookById);
+exports.bookRoutes.put("/:bookId", updateBook_controller_1.updateBook);
+exports.bookRoutes.delete("/:bookId", deleteBook_controller_1.deleteBook);
