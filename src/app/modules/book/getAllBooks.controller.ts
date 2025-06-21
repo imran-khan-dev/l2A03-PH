@@ -24,7 +24,7 @@ export const getAllBooks = async (
       .limit(parseInt(limit as string))
       .lean();
 
-    const cleanedBooks = books.map(({ __v, ...rest }) => rest);
+    const cleanedBooks = books.map(({ ...rest }) => rest);
 
     res.status(200).json({
       success: true,

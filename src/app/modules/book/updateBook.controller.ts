@@ -21,8 +21,8 @@ export const updateBook = async (
     }
 
     const updatedBook = await Book.findByIdAndUpdate(bookId, req.body, {
-      new: true, 
-      runValidators: true, 
+      new: true,
+      runValidators: true,
     });
 
     if (!updatedBook) {

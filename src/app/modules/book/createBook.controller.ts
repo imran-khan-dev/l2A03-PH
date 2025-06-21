@@ -8,7 +8,7 @@ export const createBook = async (
 ) => {
   try {
     const book = await Book.create(req.body);
-    const { __v, ...bookData } = book.toObject();
+    const { ...bookData } = book.toObject();
 
     res.status(201).json({
       success: true,

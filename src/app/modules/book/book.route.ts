@@ -4,7 +4,7 @@ import { getAllBooks } from "./getAllBooks.controller";
 import { getBookById } from "./getBookById.controller";
 import { updateBook } from "./updateBook.controller";
 import { deleteBook } from "./deleteBook.controller";
-import validateRequest from "../book/validateRequest";
+import validateRequest from "../../middlewares/validateRequest";
 import { createBookZodSchema } from "./book.validation";
 
 export const bookRoutes = express.Router();

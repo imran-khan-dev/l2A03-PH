@@ -1,15 +1,31 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Model, Document } from "mongoose";
 
 export enum Genre {
-  FICTION = 'FICTION',
-  NON_FICTION = 'NON_FICTION',
-  SCIENCE = 'SCIENCE',
-  HISTORY = 'HISTORY',
-  BIOGRAPHY = 'BIOGRAPHY',
-  FANTASY = 'FANTASY',
+  FICTION = "FICTION",
+  NON_FICTION = "NON_FICTION",
+  SCIENCE = "SCIENCE",
+  HISTORY = "HISTORY",
+  BIOGRAPHY = "BIOGRAPHY",
+  FANTASY = "FANTASY",
 }
 
-const bookSchema = new Schema(
+export interface IBook extends Document {
+  title: string;
+  author: string;
+  genre: Genre;
+  isbn: string;
+  description?: string;
+  copies: number;
+  available: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface BookModel extends Model<IBook> {
+  updateAvailability(bookId: string): Promise<void>;
+}
+
+const bookSchema = new Schema<IBook>(
   {
     title: { type: String, required: true },
     author: { type: String, required: true },
@@ -23,11 +39,26 @@ const bookSchema = new Schema(
     copies: {
       type: Number,
       required: true,
-      min: [0, 'Copies must be a positive number'],
+      min: [0, "Copies must be a positive number"],
     },
     available: { type: Boolean, default: true },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.__v;
+      },
+    },
+  }
 );
 
-export const Book = model('Book', bookSchema);
+bookSchema.statics.updateAvailability = async function (bookId: string) {
+  const book = await this.findById(bookId);
+  if (book) {
+    book.available = book.copies > 0;
+    await book.save();
+  }
+};
+
+export const Book = model<IBook, BookModel>("Book", bookSchema);
